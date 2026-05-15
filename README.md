@@ -13,7 +13,7 @@ Makine şu kural dizisini takip eder:
 4.  **q7:** Kabul durumu.
 
 ## 🚀 Çalıştırma
-Kodu yerel makinenizde çalıştırmak için:
+Kodu makinenizde çalıştırmak için:
 
 ```bash
 python main.py
