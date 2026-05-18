@@ -1,7 +1,7 @@
 class TuringMachine:
 
     def __init__(self, tape_input):
-
+        self.original_input = tape_input
         self.tape = list(tape_input) + ["_"]
         self.head = 0
         self.state = "q0"
@@ -69,6 +69,7 @@ class TuringMachine:
         self.state = new_state
 
     def run(self):
+        print(f"Girdi: {self.original_input}")
         while self.state not in [self.accept_state, self.reject_state]:
             self.step()
         if self.state == self.accept_state:
