@@ -1,59 +1,80 @@
-class TuringPlaka:
-    def __init__(self, input_string):
-        self.tape = list(input_string)
+class TuringMachine:
+
+    def __init__(self, tape_input):
+
+        self.tape = list(tape_input) + ["_"]
+        self.head = 0
         self.state = "q0"
-        self.pos = 0
+        self.accept_state = "qa"
+        self.reject_state = "qr"
+        self.digits = "0123456789"
+        self.letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        self.transitions = {}
+        self.build_transitions()
+    def build_transitions(self):
+        for d in self.digits:
+            self.transitions[("q0", d)] = ("q1", "X", "R")
+        for d in self.digits:
+            self.transitions[("q1", d)] = ("q2", "X", "R")
+        for l in self.letters:
+            self.transitions[("q2", l)] = ("q3", "Y", "R")
 
-    def is_digit(self, c):
-        return c.isdigit()
+        for l in self.letters:
+            self.transitions[("q3", l)] = ("q4", "Y", "R")
+        for d in self.digits:
+            self.transitions[("q4", d)] = ("q5", "Z", "R")
 
-    def is_upper(self, c):
-        return c.isalpha() and c.isupper()
+        for d in self.digits:
+            self.transitions[("q5", d)] = ("q6", "Z", "R")
+
+        for d in self.digits:
+            self.transitions[("q6", d)] = ("q7", "Z", "R")
+        self.transitions[("q7", "_")] = ("qa", "_", "R")
+
+    def read(self):
+        return self.tape[self.head]
+
+    def write(self, char):
+        self.tape[self.head] = char
+
+    def move(self, direction):
+
+        if direction == "R":
+            self.head += 1
+
+            if self.head >= len(self.tape):
+                self.tape.append("_")
+
+        elif direction == "L":
+
+            if self.head == 0:
+                self.tape.insert(0, "_")
+            else:
+                self.head -= 1
 
     def step(self):
+        symbol = self.read()
+        print(f"Durum: {self.state}, Okunan: {symbol}")
 
-        if self.pos < len(self.tape):
-            c = self.tape[self.pos]
-            print(f"Durum {self.state}, Okunan: {c}")
+        key = (self.state, symbol)
 
-        else:
-            c = "boşluk"
-            print(f"Durum {self.state}, Okunan: boşluk")
+        if key not in self.transitions:
+            self.state = self.reject_state
+            return
 
-        if self.state == "q0":
-            self.state = "q1" if self.is_digit(c) else "REJECT"
+        new_state, write_symbol, direction = self.transitions[key]
 
-        elif self.state == "q1":
-            self.state = "q2" if self.is_digit(c) else "REJECT"
-
-        elif self.state == "q2":
-            self.state = "q3" if self.is_upper(c) else "REJECT"
-
-        elif self.state == "q3":
-            self.state = "q4" if self.is_upper(c) else "REJECT"
-
-        elif self.state == "q4":
-            self.state = "q5" if self.is_digit(c) else "REJECT"
-
-        elif self.state == "q5":
-            self.state = "q6" if self.is_digit(c) else "REJECT"
-
-        elif self.state == "q6":
-            self.state = "q7" if self.is_digit(c) else "REJECT"
-
-        self.pos += 1
+        self.write(write_symbol)
+        self.move(direction)
+        self.state = new_state
 
     def run(self):
-        print(f"Girdi: {''.join(self.tape)}")
-        while self.state not in ["REJECT", "q7"]:
+        while self.state not in [self.accept_state, self.reject_state]:
             self.step()
-
-        if self.state == "q7":
-            print("Durum q7, Okunan: boşluk")
-            return "KABUL"
-        return "RED"
-plaka = input("plaka giriniz: ")
-
-main = TuringPlaka(plaka)
-sonuc = main.run()
-print("Sonuç:", sonuc)
+        if self.state == self.accept_state:
+            print("Sonuç: KABUL")
+        else:
+            print("Sonuç: RED")
+plaka = input("Plaka giriniz: ")
+main = TuringMachine(plaka)
+main.run()
