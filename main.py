@@ -12,23 +12,23 @@ class TuringMachine:
         self.transitions = {}
         self.build_transitions()
     def build_transitions(self):
-        for d in self.digits:
-            self.transitions[("q0", d)] = ("q1", "X", "R")
-        for d in self.digits:
-            self.transitions[("q1", d)] = ("q2", "X", "R")
-        for l in self.letters:
-            self.transitions[("q2", l)] = ("q3", "Y", "R")
+        for N in self.digits:
+            self.transitions[("q0", N)] = ("q1", "X", "R")
+        for N in self.digits:
+            self.transitions[("q1", N)] = ("q2", "X", "R")
+        for L in self.letters:
+            self.transitions[("q2", L)] = ("q3", "Y", "R")
 
-        for l in self.letters:
-            self.transitions[("q3", l)] = ("q4", "Y", "R")
-        for d in self.digits:
-            self.transitions[("q4", d)] = ("q5", "Z", "R")
+        for L in self.letters:
+            self.transitions[("q3", L)] = ("q4", "Y", "R")
+        for N in self.digits:
+            self.transitions[("q4", N)] = ("q5", "Z", "R")
 
-        for d in self.digits:
-            self.transitions[("q5", d)] = ("q6", "Z", "R")
+        for N in self.digits:
+            self.transitions[("q5", N)] = ("q6", "Z", "R")
 
-        for d in self.digits:
-            self.transitions[("q6", d)] = ("q7", "Z", "R")
+        for N in self.digits:
+            self.transitions[("q6", N)] = ("q7", "Z", "R")
         self.transitions[("q7", "_")] = ("qa", "_", "R")
 
     def read(self):
