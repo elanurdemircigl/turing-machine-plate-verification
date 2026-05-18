@@ -10,7 +10,7 @@ Makine şu kural dizisini takip eder:
 1.  **q0-q1:** İlk iki karakter rakam olmalı.
 2.  **q2-q3:** Sonraki iki karakter büyük harf olmalı.
 3.  **q4-q6:** Son üç karakter rakam olmalı.
-4.  **q7:** Kabul durumu.
+4.  **q7:** Plakanın sonunu temsil eden boşluk `_` karakteri okunur ve makine **qa** durumuna geçer.
 
 ## Çalıştırma
 Kodu makinenizde çalıştırmak için:
